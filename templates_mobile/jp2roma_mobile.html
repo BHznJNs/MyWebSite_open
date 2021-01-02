@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>日语罗马音转换-手机端</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+        <style type="text/css">
+        	body {margin:0;padding:0;}
+            textarea {
+                padding: 2vw;
+                font-size: 6vw;
+                display: block;
+                resize: none;
+                outline: none;
+                border-radius: 4vmax;
+            }
+            button {
+                width: 20vw;
+                height: 100%;
+                font-size: 6vw;
+                font-weight: 550;
+                color: white;
+                background-color: grey;
+                border: solid #acacac 1vw;
+                transition: 0.3s;
+                -webkit-transition: 0.3s;
+            }
+            button:focus {
+                color: black;
+                background-color: #cecece;
+                border-color: #cecece;
+            }
+			#background {
+				margin-top: 5vh;
+				margin-left: 2vmax;
+				position: fixed;
+				top: 0;
+				left: 0;
+				z-index: -10;
+				font-size: smaller;
+				font-family: monospace;
+			}
+            /* main */
+			#main {
+				width: 100vw;
+				opacity: 1;
+				overflow: hidden;
+				background-color: white;
+				transition: 0.8s;
+				-webkit-transition: 0.8s;
+			}
+			div.head {
+				width: 100%;
+				height: 9vh;
+				position: fixed;
+				top: 0;
+				left: 0;
+				z-index: 9999;
+				background-color: rgba(2, 150, 199, 0.8);
+			}
+			p.head {
+				height: 100%;
+				margin: 0;
+				color: white;
+				line-height: 10vh;
+				font-size: 8.5vw;
+				font-family: monospace;
+			}
+            #mainarea {margin-top: 12vh;}
+            #buttons {
+                width: 85%;
+                height: 10vh;
+                margin:0 auto;
+            }
+            textarea.jp {
+                width: 88vw;
+                height: 30vh;
+                margin: 0 auto;
+                border: solid 1vw grey;
+                transition: 0.4s;
+                -webkit-transition: 0.4s;
+            }
+            textarea.jp:focus {
+                width: 86vw;
+                height: 28vh;
+                background-color: #e0e5e9;
+                border-color: #e0e5e9;
+            }
+
+        	/* hidden */
+			div.hidden {
+				width: 60%;
+				height: 100vh;
+				position: fixed;
+				top: 0;
+				left: 120%;
+				overflow: scroll;
+				background-color: #abd4fd;
+				-webkit-box-shadow:-10px 0px 20px #333333;
+				box-shadow:-10px 0px 20px #333333;
+				transition: 0.8s;
+				-webkit-transition: 0.8s;
+			}
+			img.hidden {
+				width: 100%;
+				padding: 1vmax;
+				box-sizing: border-box;
+				background-color: white;
+			}
+
+			div.fold {
+				overflow: hidden;
+				width: 90%;
+				height: 10vh;
+				margin: 2vh auto;
+				color: #1e577e;
+				border: solid #1e577e;
+				border-radius: 4vh;
+				transition: 0.8s;
+				-webkit-transition: 0.8s;
+			}
+			p.title {
+				margin: 0 auto;
+				height: 10vh;
+				text-align: center;
+				line-height: 10vh;
+			}
+			p.folded {
+				margin: 1vh 1vmax;
+				font-size: 4vw;
+				border-radius: 2vmax;
+				background-color: #daeafa;
+			}
+            .textarea_folded {
+                width: 100%;
+                height: 40vh;
+                box-sizing: border-box;
+            }
+        	/* footer */
+			#footer {
+				width: 100%;
+				padding: 4vw 0;
+				margin: 4vw 0 0;
+				color: white;
+				font-size: 4vw;
+				font-family: monospace;
+				text-align: right;
+				background-color: #333333;
+			}
+            /* icons */
+			#home_icon {
+				float: left;
+				height: 120%;
+				background-color: #0296c7;
+				border-bottom-right-radius: 4vmax;
+				border-bottom: solid #1e577e;
+				border-right: solid #1e577e;
+				box-sizing: border-box;
+			}
+			#menu_icon {
+				width: 10vmax;
+				position: fixed;
+				right: 4vw;
+				bottom: 4vh;
+				background-color: darkcyan;
+				border-radius: 6vmax;
+				cursor: pointer;
+			}
+			#return_icon {
+				width: 10vmax;
+				position: fixed;
+				right: -40vw;
+				bottom: 4vh;
+				background-color: darkcyan;
+				border-radius: 6vmax;
+				cursor: pointer;
+				transition: 0.6s;
+				-webkit-transition: 0.6s;
+			}
+		</style>
+	</head>
+	<body>
+        <script>
+			function jump2(link_) {window.location.href = link_}
+        </script>
+        <div id="background">
+			<p>
+				<a style="color:#591f80">from</a> flask <a style="color:#591f80">import</a> Flask
+				<br /><br />
+				app = Flask(<a style="color:#0296c7">__name__</a>)
+				<br /><br />
+				<a style="color:#b1b400">@app.route('/')</a><br />
+				<a style="color:#0296c7">def</a> <a style="color:#b1b400">index()</a>:<br />
+				&nbsp;&nbsp;<a style="color:#591f80">return</a> 'B_Web!'				
+			</p>
+		</div>
+		<div id="main">
+			<div class="head">
+				<a href="/"><img id="home_icon" src="{{url_for('static', filename='icons/home_icon.png')}}"/></a>
+                <p class="head">日语罗马音转换</p>
+            </div>
+            <div id="mainarea">
+                <form method="post">
+                    <script>
+                    function clean() {
+                        var jp_textarea = document.getElementById("jp_textarea");
+                        jp_textarea.value="";
+                        jp_textarea.focus();
+                        document.getElementById("result_textarea").value="";
+                        document.getElementById("janome").value="";
+                        document.getElementById("furigana").value="";
+                        }
+                    </script>
+                    {% if jp %}
+                    <textarea class="jp" placeholder="在此输入日文&#10如：希望の花" name="jp">{{ jp }}</textarea>
+                    {% else %}
+                    <textarea class="jp" placeholder="在此输入日文&#10如：希望の花" name="jp"></textarea>
+                    {% endif %}
+                    <div id="buttons">
+                        <button type="button" onclick="clean()">X</button>
+                        <button type="submit" style="float: right">转换</button>
+                    </div>
+                </form>
+                {% if romaji %}
+                <textarea class="jp" readonly placeholder="这里是结果&#10kibo- no hana">{{ romaji }}</textarea>
+                {% else %}
+                <textarea class="jp" readonly placeholder="这里是结果&#10kibo- no hana"></textarea>
+                {% endif %}
+            </div>
+
+            <div class="fold" style="margin-top: 6vh;">
+                <p class="title" onclick="show_fold(0)">日语注音假名&nbsp;&nbsp;+</p>
+                <div class="folded" name="folded">
+                    {% if furigana %}
+                    <textarea class="textarea_folded" readonly placeholder="希望[kibo-]の[no]花[hana]">{{ furigana }}</textarea>
+                    {% else %}
+                    <textarea class="textarea_folded" readonly placeholder="希望[kibo-]の[no]花[hana]"></textarea>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="fold" style="margin-top: 6vh;">
+                <p class="title" onclick="show_fold(1)">日语形态分析&nbsp;&nbsp;+</p>
+                <div class="folded" name="folded">
+                    {% if analysed %}
+                    <textarea class="textarea_folded" readonly placeholder="希望	名詞,サ変接続,无,无,无,无,希望,キボウ,キボー
+    の	助詞,連体化,无,无,无,无,の,ノ,ノ
+    花	名詞,一般,无,无,无,无,花,ハナ,ハナ">{{ analysed }}</textarea>
+                    {% else %}
+                    <textarea class="textarea_folded" readonly placeholder="希望	名詞,サ変接続,无,无,无,无,希望,キボウ,キボー
+    の	助詞,連体化,无,无,无,无,の,ノ,ノ
+    花	名詞,一般,无,无,无,无,花,ハナ,ハナ"></textarea>
+                    {% endif %}
+                </div>
+            </div>
+
+            <p id="footer">
+                Running by Flask<br />
+                Running on uwsgi Server<br />
+                pi@raspberrypi
+            </p>
+
+            <img id="menu_icon" onclick="show_hidden()" src="{{url_for('static', filename='icons/menu_icon.png')}}"/>
+        </div>
+        <div class="hidden">
+            <img class="hidden" src="{{url_for('static', filename='logos/b_web.png')}}"/>
+            <div class="fold" style="margin-top: 2vmax;">
+                <p class="title" style="font-size: 6vw;" onclick="show_fold(2)">实用工具&nbsp;&nbsp;+</p>
+                <div class="folded" name="folded">
+                    <p class="title folded" onclick="jump2('tools/jp2roma')">日语罗马音转换</p>
+                    <p class="title folded" onclick="jump2('tools/cmdownload')">网易云在线下载</p>
+                    <p class="title folded" onclick="jump2('tools/pyfuns')">Py3内置函数</p>
+                </div>
+            </div>
+            <div class="fold">
+                <p class="title" style="font-size: 6vw;" onclick="show_fold(3)">编程笔记&nbsp;&nbsp;+</p>
+                <div class="folded" name="folded">
+                    <p class="title folded" onclick="jump2('notes/python3')">Python3</p>
+                    <p class="title folded" onclick="jump2('notes/js')">JavaScript</p>
+                    <p class="title folded" onclick="jump2('notes/css')">CSS</p>
+                    <p class="title folded" onclick="jump2('notes/other')">其他</p>
+                </div>
+            </div>
+            <!-- 控制折叠菜单 -->
+            <script>
+                var foldeds = document.getElementsByName("folded")
+                var div_folds = document.getElementsByClassName("fold")
+                function show_fold(index) {
+                    var before_inner = div_folds[index].childNodes[1].innerHTML.split("&nbsp;&nbsp;")
+                    if (before_inner[1] === "+") {
+                        div_folds[index].style.height = window.innerHeight*0.13 + foldeds[index].offsetHeight + "px"
+                        div_folds[index].childNodes[1].innerHTML = before_inner[0] + "&nbsp;&nbsp;-"
+                    } else {
+                        div_folds[index].style.height = window.innerHeight*0.1 + "px"
+                        div_folds[index].childNodes[1].innerHTML = before_inner[0] + "&nbsp;&nbsp;+"
+                    }
+                }
+            </script>
+            <div class="fold">
+                <p class="title" onclick="jump2('/about')" style="font-size: 6vw;">关于/须知</p>
+            </div>
+            <img id="return_icon" onclick="hide()" src="{{url_for('static', filename='icons/return_icon.png')}}"/>
+            <div style="height: 16vh"></div>
+        </div>
+        <!-- 控制侧滑菜单 -->
+        <script>
+            var main = document.getElementById("main")
+            var hidden = document.getElementsByClassName("hidden")[0]
+            var return_icon = document.getElementById("return_icon")
+            function show_hidden() {
+                hidden.style.left = "40%"
+                main.style.opacity = 0.4
+                main.style.pointerEvents = "none"
+                return_icon.style.right = "4vw"
+            }
+            function hide() {
+                hidden.style.left = "120%"
+                main.style.opacity = 1
+                main.style.pointerEvents = "auto"
+                return_icon.style.right = "-40vw"
+            }
+        </script>
+	</body>
+</html>
