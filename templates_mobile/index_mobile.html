@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>首页-手机端</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+		<style>
+			body {margin:0;padding:0;}
+			#background {
+				margin-top: 5vh;
+				margin-left: 2vmax;
+				position: fixed;
+				top: 0;
+				left: 0;
+				z-index: -10;
+				font-size: smaller;
+				font-family: monospace;
+			}
+			/* main */
+			#main {
+				width: 100vw;
+				opacity: 1;
+				overflow: hidden;
+				background-color: white;
+				transition: 0.8s;
+				-webkit-transition: 0.8s;
+			}
+			div.head {
+				width: 100%;
+				height: 9vh;
+				position: fixed;
+				top: 0;
+				left: 0;
+				z-index: 9999;
+				background-color: rgba(2, 150, 199, 0.8);
+			}
+			p.head {
+				height: 100%;
+				margin: 0;
+				color: white;
+				line-height: 10vh;
+				font-size: 8.5vw;
+				font-family: monospace;
+			}
+
+			/* show_box css */
+			div.show_box {
+				width: 100vw;
+				margin: 12vh auto;
+				margin-bottom: 0;
+				overflow: hidden;
+				border-top: solid grey;
+				border-bottom: solid grey;
+				box-sizing: border-box;
+			}
+			div.show_content {
+				width: 400vw;
+				position: relative;
+				margin: 0;
+				animation: turn_right 12s 2s infinite;
+				-webkit-animation: turn_right 12s 2s infinite;
+				transition: 0.3s;
+				-webkit-transition: 0.3s;
+			}
+			@keyframes turn_right 
+			{
+				0% {right: 0;}
+				28.3% {right: 0;}
+				33.3% {right: 100vw;}
+				61.6% {right: 100vw;}
+				66.6% {right: 200vw;}
+				95% {right: 200vw;}
+				100% {right: 300vw;}
+			}
+			@-webkit-keyframes turn_right 
+			{
+				0% {right: 0;}
+				26.3% {right: 0;}
+				33.3% {right: 100vw;}
+				59.6% {right: 100vw;}
+				66.6% {right: 200vw;}
+				93% {right: 200vw;}
+				100% {right: 300vw;}
+			}
+
+			img.show_box {
+				float: left;
+				width: 100vw;
+				height: calc(100vw * 0.38);
+				border-left: solid grey;
+				border-right: solid grey;
+				box-sizing: border-box;
+			}
+
+			div.content {
+				width: 94%;
+				margin: 2vh auto;
+				padding: 1vmax;
+				overflow: hidden;
+				border: solid gray;
+				border-radius: 6vmax;
+				box-sizing: border-box;
+			}
+			img.content {
+				height: 17vw;
+				float: left;
+				overflow: hidden;
+				margin-top: auto;
+				padding: 1vmax;
+				border-radius: 4vmax;
+				background-color: #1e577e;
+			}
+			a.content {
+				float: right;
+				width: 70%;
+				height: 17vw;
+				font-size: 7vw;
+				font-family: monospace;
+			}
+			img.feedback {
+				width: 10vw
+			}
+
+			/* hidden */
+			div.hidden {
+				width: 60%;
+				height: 100vh;
+				position: fixed;
+				top: 0;
+				left: 120%;
+				overflow: scroll;
+				background-color: #abd4fd;
+				-webkit-box-shadow:-10px 0px 20px #333333;
+				box-shadow:-10px 0px 20px #333333;
+				transition: 0.8s;
+				-webkit-transition: 0.8s;
+			}
+			img.hidden {
+				width: 100%;
+				padding: 1vmax;
+				box-sizing: border-box;
+				background-color: white;
+			}
+
+			div.fold {
+				overflow: hidden;
+				width: 90%;
+				height: 10vh;
+				margin: 2vh auto;
+				color: #1e577e;
+				border: solid #1e577e;
+				border-radius: 4vh;
+				transition: 0.8s;
+				-webkit-transition: 0.8s;
+			}
+			p.title {
+				margin: 0 auto;
+				height: 10vh;
+				text-align: center;
+				line-height: 10vh;
+			}
+			p.folded {
+				margin: 1vh 1vmax;
+				font-size: 4vw;
+				border-radius: 2vmax;
+				background-color: #daeafa;
+			}
+
+			/* footer */
+			div.footer {
+				width: 100%;
+				height: 20vh;
+				color: white;
+				background-color: black;
+			}
+
+			/* icons */
+			#home_icon {
+				float: left;
+				height: 120%;
+				background-color: #0296c7;
+				border-bottom-right-radius: 4vmax;
+				border-bottom: solid #1e577e;
+				border-right: solid #1e577e;
+				box-sizing: border-box;
+			}
+			#menu_icon {
+				width: 10vmax;
+				position: fixed;
+				right: 4vw;
+				bottom: 4vh;
+				background-color: darkcyan;
+				border-radius: 6vmax;
+				cursor: pointer;
+			}
+			#return_icon {
+				width: 10vmax;
+				position: fixed;
+				right: -40vw;
+				bottom: 4vh;
+				background-color: darkcyan;
+				border-radius: 6vmax;
+				cursor: pointer;
+				transition: 0.6s;
+				-webkit-transition: 0.6s;
+			}
+		</style>
+	</head>
+	<body>
+		<script>
+			function jump2(link_) {window.location.href = link_}
+		</script>
+		<div id="background">
+			<p>
+				<a style="color:#591f80">from</a> flask <a style="color:#591f80">import</a> Flask
+				<br /><br />
+				app = Flask(<a style="color:#0296c7">__name__</a>)
+				<br /><br />
+				<a style="color:#b1b400">@app.route('/')</a><br />
+				<a style="color:#0296c7">def</a> <a style="color:#b1b400">index()</a>:<br />
+				&nbsp;&nbsp;<a style="color:#591f80">return</a> 'B_Web!'				
+			</p>
+		</div>
+		<div id="main">
+			<div class="head">
+				<a href="/"><img id="home_icon" src="{{url_for('static', filename='icons/home_icon.png')}}"/></a>
+				<p class="head">BHznJNs的个人网站</p>
+			</div>
+
+			<div class="show_box">
+				<div class="show_content">
+					<a href="/tools/jp2roma"><img class="show_box" src="{{url_for('static', filename='imgs/jp2roma_img.png')}}"/></a>
+					<a href="/notes/python3"><img class="show_box" src="{{url_for('static', filename='imgs/python_img.png')}}"/></a>
+					<a href="/notes/css"><img class="show_box" src="{{url_for('static', filename='imgs/css_img.png')}}"/></a>
+					<a href="/tools/jp2roma"><img class="show_box" src="{{url_for('static', filename='imgs/jp2roma_img.png')}}"/></a>
+				</div>
+			</div>
+
+			<div class="content">
+				<img class="content" src="{{url_for('static', filename='icons/where_icon.png')}}"/>
+				<a class="content">这里是BHznJNs的个人网站</a>
+			</div>
+			<div class="content">
+				<img class="content" src="{{url_for('static', filename='icons/function_icon.png')}}"/>
+				<a class="content">这里用来展示我的编程作品和笔记</a>
+			</div>
+			<div class="content">
+				<img class="content" src="{{url_for('static', filename='icons/notice_icon.png')}}"/>
+				<a class="content"style="font-size:6vw;padding-top:1vw">这里是公告栏，用来展示网站的每一次更新</a>
+			</div>
+			<div class="content">
+				<img class="content" src="{{url_for('static', filename='icons/feedback_icon.png')}}"/>
+				<a class="content">
+					有问题？反馈<br />
+					<img class="feedback" alt="Bilibili" onclick="jump2('https://space.bilibili.com/274945998')" src="{{url_for('static', filename='logos/bilibili_logo.png')}}">
+					<img class="feedback" alt="zhihu" onclick="jump2('https://www.zhihu.com/people/bhznjns')" src="{{url_for('static', filename='logos/zhihu_logo.png')}}">
+				</a>
+			</div>
+
+			<div id="footer">
+				<p></p>
+			</div>
+
+			<img id="menu_icon" onclick="show_hidden()" src="{{url_for('static', filename='icons/menu_icon.png')}}"/>
+		</div>
+		<div class="hidden">
+			<img class="hidden" src="{{url_for('static', filename='logos/b_web.png')}}"/>
+			<div class="fold" style="margin-top: 2vmax;">
+				<p class="title" style="font-size: 6vw;" onclick="show_fold(0)">实用工具&nbsp;&nbsp;+</p>
+				<div class="folded" name="folded">
+					<p class="title folded">日语罗马音转换</p>
+					<p class="title folded">网易云在线下载</p>
+					<p class="title folded">Py3内置函数</p>
+				</div>
+			</div>
+			<div class="fold">
+				<p class="title" style="font-size: 6vw;" onclick="show_fold(1)">编程笔记&nbsp;&nbsp;+</p>
+				<div class="folded" name="folded">
+					<p class="title folded">Python3</p>
+					<p class="title folded">JavaScript</p>
+					<p class="title folded">CSS</p>
+					<p class="title folded">其他</p>
+				</div>
+			</div>
+			<!-- 控制折叠菜单 -->
+			<script>
+				var foldeds = document.getElementsByName("folded")
+				var div_folds = document.getElementsByClassName("fold")
+				function show_fold(index) {
+					var before_inner = div_folds[index].childNodes[1].innerHTML.split("&nbsp;&nbsp;")
+					if (before_inner[1] === "+") {
+						div_folds[index].style.height = window.innerHeight*0.13 + foldeds[index].offsetHeight + "px"
+						div_folds[index].childNodes[1].innerHTML = before_inner[0] + "&nbsp;&nbsp;-"
+					} else {
+						div_folds[index].style.height = window.innerHeight*0.1 + "px"
+						div_folds[index].childNodes[1].innerHTML = before_inner[0] + "&nbsp;&nbsp;+"
+					}
+				}
+			</script>
+			<div class="fold">
+				<p class="title" style="font-size: 6vw;">关于/须知</p>
+			</div>
+			<img id="return_icon" onclick="hide()" src="{{url_for('static', filename='icons/return_icon.png')}}"/>
+			<div style="height: 16vh"></div>
+		</div>
+		<!-- 控制侧滑菜单 -->
+		<script>
+			var main = document.getElementById("main")
+			var hidden = document.getElementsByClassName("hidden")[0]
+			var return_icon = document.getElementById("return_icon")
+			function show_hidden() {
+				hidden.style.left = "40%"
+				main.style.opacity = 0.4
+				main.style.pointerEvents = "none"
+				return_icon.style.right = "4vw"
+			}
+			function hide() {
+				hidden.style.left = "120%"
+				main.style.opacity = 1
+				main.style.pointerEvents = "auto"
+				return_icon.style.right = "-40vw"
+			}
+		</script>
+	</body>
+</html>
