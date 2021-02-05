@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>在线背词</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+		<style>
+			body {margin:0;padding:0}
+
+			#main {
+				width: 80%;
+				height: 60vh;
+				margin: 2vh auto;
+				overflow: hidden;
+				border: solid 1vw #6699ce;
+				border-radius: 2vw;
+			}
+			#showbox {
+				position: relative;
+				right: 0;
+				width: 1000%;
+				height: 100%;
+				transition: .6s;
+				-webkit-transition: .6s;
+			}
+
+			div.words{
+				width: 10%;
+				height: 100%;
+				float: left;
+			}
+
+			/* reminder */
+			div.reminder {
+				display: flex;
+				justify-content: space-around;
+				align-items: center;
+				flex-wrap: wrap;
+				height: 24vh;
+				margin: 2vh 2vw;
+			}
+			p.reminder {
+				height: 50%;
+				margin: 0;
+				padding: 0 .5em;
+				color: white;
+				box-sizing: border-box;
+				font-size: 2.6vw;
+				font-family: Arial,Arial,Helvetica,Sans-Serif;
+				text-align: center;
+				line-height: 12vh;
+				overflow: hidden;
+			}
+
+			p.word-en {background-color: #99CC33;}
+			p.word-cn {background-color: #eebe2d;}
+			p.word-part {background-color: #009999;}
+			p.p-s {background-color: #FF6666;}
+			p.usage {background-color: #CC6633;}
+			p.exam-sentence {background-color: #0099CC;}
+
+			p.word-en, p.exam-sentence {
+				display: none;
+				max-width: 0;
+				padding: 0;
+				transition: 1.5s;
+				-webkit-transition: 1.5s;
+			}
+
+			/* buttons */
+			div.buttons {
+				display: flex;
+				justify-content: space-around;
+				height: 14vh;
+			} div.last-buttons {margin: 23vh auto;}
+			div.button {
+				width: 20%;
+				height: 100%;
+				color: white;
+				background-color: #7aa6ff;
+				border-radius: 4vh;
+				overflow: hidden;
+				cursor: pointer;
+				user-select: none;
+				transition: .4s;
+				-webkit-transition: .4s;
+			} div.button:hover {
+				width: 16%;
+				color: white;
+				background-color: #3a5ca1;
+			} div.button:nth-child(2), div.button:nth-child(2):hover, div.button:nth-child(3), div.button:nth-child(3):hover {width: 23%}
+
+			img.button, img.button-submit {
+				display: block;
+				height: 12vh;
+				padding: 1vh;
+				margin: 0 auto;
+			} img.backward {transform:rotate(180deg)}
+
+			div.submit {
+				position: relative;
+				left: 0;
+				width: 300%;
+				margin-left: -100%;
+				transition: .4s;
+				-webkit-transition: .4s;
+			}
+			p.button-submit, div.img-submit {
+				width: 33.33%;
+				float: left;
+			}
+			p.button-submit, p.button-view, p.button-next {
+				margin: 0;
+				line-height: 14vh;
+				font-size: 8vh;
+				text-align: center;
+			} p.button-next {font-size: 6vh;}
+
+			textarea.input {
+				display: block;
+				width: 60vw;
+				height: 11vh;
+				margin: 2vh auto;
+				padding: 0 .4em;
+				font-size: 3.6vw;
+				line-height: 11vh;
+				resize: none;
+				outline: none;
+				border: solid 1vmin  #7aa6ff;
+				border-radius: 2vh;
+				transition: .6s;
+				-webkit-transition: .6s;
+			} textarea.input::placeholder {
+				color: #777;
+			} textarea.input:hover, textarea.input:focus {
+				color: white;
+				background-color: #777;
+				border-color: transparent;
+			}
+		</style>
+	</head>
+	<body>
+		{% include 'parts/headline.html' %}
+
+		<div id="main">
+			<div id="showbox">
+
+				{% for word in WORDs %}
+				<div class="words">
+					<div class="reminder">
+						<p class="word-en reminder">{{ word[0] }}</p>
+						<p class="word-cn reminder">{{ word[1] }}</p>
+						<p class="word-part reminder">{{ word[2] }}</p><! 词性 >
+						<p class="p-s reminder">[{{ word[3] }}]</p><! 音标 >
+						<p class="usage reminder">{{ word[4] }}</p>
+						<p class="exam-sentence reminder ">{{ word[5] }}</p>
+					</div>
+					<div class="buttons">
+						<div class="backward button" onclick="backward()">
+							<img class="backward button" src="{{url_for('static', filename='icons/forward_icon.png')}}"/>
+						</div>
+						<div class="button">
+							<div class="submit">
+								<div class="img-submit">
+									<img class="button-submit" src="{{url_for('static', filename='icons/yes_icon.png')}}"/>
+								</div>
+								<p class="button-submit" onclick="submit(this)">提交</p>
+								<div class="img-submit">
+									<img class="button-submit" src="{{url_for('static', filename='icons/no_icon.png')}}"/>
+								</div>
+							</div>
+						</div>
+						<div class="button">
+							<p class="button-view" onclick="view(this)">查看</p>
+						</div>
+						<div class="forward button" onclick="forward()">
+							<img class="forward button" src="{{url_for('static', filename='icons/forward_icon.png')}}"/>
+						</div>
+					</div>
+					<textarea class="input" placeholder="请在此输入单词"></textarea>
+				</div>
+				{% endfor%}
+				<div class="words">
+					<div class="buttons last-buttons">
+						<div class="backward button" onclick="backward()">
+							<img class="backward button" src="{{url_for('static', filename='icons/forward_icon.png')}}"/>
+						</div>
+						<div class="button">
+							<p class="button-next" onclick="window.location.href = '/tools/enwords'">再来一组</p>
+						</div>
+					</div>
+				</div>
+
+				<script>
+					var backward_fir = document.getElementsByClassName("backward")[0]
+					backward_fir.style.transition = "none"
+					backward_fir.style.pointerEvents = "none"
+					backward_fir.style.opacity = 0
+
+					// move showbox
+					var showbox = document.getElementById("showbox")
+					var right_ = 0
+					function backward() {
+						right_ -= 100
+						showbox.style.right = right_ + "%"
+					}
+					function forward() {
+						right_ += 100
+						showbox.style.right = right_ + "%"
+					}
+
+					function submit(obj) {
+						var top = obj.parentNode.parentNode.parentNode.parentNode
+						var yes_or_no = top.childNodes[3].childNodes[3].childNodes[1]
+
+						var origin = top.childNodes[1].childNodes[1].innerHTML
+						var inputed = top.childNodes[5].value
+						if (inputed === origin) {
+							yes_or_no.style.left = "100%"
+						} else {yes_or_no.style.left = "-100%"}
+					}
+
+					function view(obj) {
+						var top = obj.parentNode.parentNode.parentNode
+						var origin = top.childNodes[1].childNodes[1]
+						var exam_sentence = top.childNodes[1].childNodes[13]
+
+						origin.style.display = "block"
+						exam_sentence.style.display = "block"
+						setTimeout(function() {
+							exam_sentence.style.maxWidth = "100vw"
+							origin.style.maxWidth = "100vw"
+							exam_sentence.style.padding = "0 .5em"
+							origin.style.padding = "0 .5em"
+						}, 20);
+					}
+				</script>
+			</div>
+		</div>
+
+	</body>
+</html>
